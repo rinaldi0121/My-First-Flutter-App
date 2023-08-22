@@ -4,7 +4,9 @@ import 'hotel_data.dart';
 
 class HotelDetails extends StatelessWidget {
   const HotelDetails({Key? key, required this.hotel}) : super(key: key);
+
   final HotelData hotel;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

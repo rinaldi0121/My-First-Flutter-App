@@ -153,7 +153,9 @@ class HotelMobileTemplateCard extends StatelessWidget {
 // navigation icon forward class
 class NavIconForward extends StatelessWidget {
   const NavIconForward({Key? key, required this.hotel}) : super(key: key);
+
   final HotelData hotel;
+
 // inisialisasikan index dari list class kedalam parameter
 
   @override

@@ -13,16 +13,16 @@ class HotelData {
     required this.ulasanTabHotel,
   });
 
-  String namaHotel;
-  String kota;
-  num jumlahPengunjung;
-  String rating;
-  String imageListAsset;
-  String lokasi;
-  List<String> detailImageHotelList;
-  String deskripsiTabHotel;
-  String benefitTabHotel;
   String alamatTabHotel;
+  String benefitTabHotel;
+  String deskripsiTabHotel;
+  List<String> detailImageHotelList;
+  String imageListAsset;
+  num jumlahPengunjung;
+  String kota;
+  String lokasi;
+  String namaHotel;
+  String rating;
   String ulasanTabHotel;
 }
 
