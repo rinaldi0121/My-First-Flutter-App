@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'hotel_data.dart';
+import 'package:replica/hotel_data.dart';
 
 class HotelDetails extends StatelessWidget {
   const HotelDetails({Key? key, required this.hotel}) : super(key: key);
@@ -21,43 +21,41 @@ class HotelDetails extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Carousel(
-                detailImagePath: hotel.detailImageHotelList,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: HotelInfo(
-                name: hotel.namaHotel,
-                rating: hotel.rating,
-                location: hotel.lokasi,
-              ),
-            ),
-            const TabBar(
-              tabs: [
-                Tab(text: 'Deskripsi'),
-                Tab(text: 'Benefit'),
-                Tab(text: 'Alamat'),
-                Tab(text: 'Ulasan'),
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Carousel(detailImagePath: hotel.detailImageHotelList),
+                HotelInfo(
+                  name: hotel.namaHotel,
+                  rating: hotel.rating,
+                  location: hotel.lokasi,
+                ),
+                const TabBar(
+                  tabs: [
+                    Tab(text: 'Deskripsi'),
+                    Tab(text: 'Benefit'),
+                    Tab(text: 'Alamat'),
+                    Tab(text: 'Ulasan'),
+                  ],
+                ),
+                SizedBox(
+                  height: 302,
+                  child: TabBarView(
+                    children: [
+                      Text(hotel.deskripsiTabHotel),
+                      Text(hotel.benefitTabHotel),
+                      Text(hotel.alamatTabHotel),
+                      Text(hotel.ulasanTabHotel),
+                    ],
+                  ),
+                ),
               ],
             ),
-            SizedBox(
-              height: 302,
-              child: TabBarView(
-                children: [
-                  Text(hotel.deskripsiTabHotel),
-                  Text(hotel.benefitTabHotel),
-                  Text(hotel.alamatTabHotel),
-                  Text(hotel.ulasanTabHotel),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'second.dart';
-import 'hotel_data.dart';
+import 'package:replica/second.dart';
+import 'package:replica/hotel_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,108 +44,111 @@ class HotelMobileTemplateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      // item count data length
-      itemCount: hotelDataList.length,
-      itemBuilder: (context, index) {
-        final HotelData hotel = hotelDataList[index];
-        return Container(
-          height: 350,
-          padding: const EdgeInsets.all(5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 215,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      // data path image
-                      hotel.imageListAsset,
-                      fit: BoxFit.fill,
+    return SizedBox(
+      width: double.maxFinite,
+      child: ListView.builder(
+        // item count data length
+        itemCount: hotelDataList.length,
+        itemBuilder: (context, index) {
+          final HotelData hotel = hotelDataList[index];
+          return Container(
+            height: 350,
+            padding: const EdgeInsets.all(5),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 215,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        // data path image
+                        hotel.imageListAsset,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 15, right: 10),
-                  child: SizedBox(
-                    height: 114,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  // data namaHotel
-                                  hotel.namaHotel,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                  Container(
+                    padding: const EdgeInsets.only(left: 15, right: 10),
+                    child: SizedBox(
+                      height: 114,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    // data namaHotel
+                                    hotel.namaHotel,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  // data kota
-                                  hotel.kota,
-                                  style: const TextStyle(
-                                    fontSize: 15,
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    // data kota
+                                    hotel.kota,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  // data jumlah pengunjung
-                                  '${hotel.jumlahPengunjung} Pengunjung',
-                                  style: const TextStyle(
-                                    fontSize: 15,
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    // data jumlah pengunjung
+                                    '${hotel.jumlahPengunjung} Pengunjung',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 45),
-                                const IconTheme(
-                                  data: IconThemeData(
-                                    color: Colors.amber,
-                                    size: 20,
+                                  const SizedBox(width: 45),
+                                  const IconTheme(
+                                    data: IconThemeData(
+                                      color: Colors.amber,
+                                      size: 20,
+                                    ),
+                                    child: Icon(Icons.star_rate),
                                   ),
-                                  child: Icon(Icons.star_rate),
-                                ),
-                                Text(
-                                  // data rating
-                                  hotel.rating,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const FavouriteButton(),
-                            const SizedBox(width: 15),
-                            // parameter diisikan widget untuk navigasi
-                            NavIconForward(hotel: hotel),
-                          ],
-                        ),
-                      ],
+                                  Text(
+                                    // data rating
+                                    hotel.rating,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const FavouriteButton(),
+                              const SizedBox(width: 15),
+                              // parameter diisikan widget untuk navigasi
+                              NavIconForward(hotel: hotel),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
