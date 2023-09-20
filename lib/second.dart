@@ -1,9 +1,141 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:replica/favourite_button.dart';
 import 'package:replica/hotel_data.dart';
 
 class HotelDetails extends StatelessWidget {
   const HotelDetails({Key? key, required this.hotel}) : super(key: key);
+
+  final HotelData hotel;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth <= 580) {
+          return MobileHotelDetails(hotel: hotel);
+        } else if (constraints.maxWidth <= 850) {
+          return WebHotelDetails(hotel: hotel);
+        } else {
+          return WebHotelDetails(hotel: hotel);
+        }
+      },
+    );
+  }
+}
+
+class WebHotelDetails extends StatelessWidget {
+  const WebHotelDetails({Key? key, required this.hotel}) : super(key: key);
+
+  final HotelData hotel;
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                            ),
+                            child: GestureDetector(
+                              child: Image.asset(
+                                hotel.imageListAsset,
+                                fit: BoxFit.fill,
+                              ),
+                              onTap: () {
+                                showImageViewer(
+                                  context,
+                                  Image.asset(hotel.imageListAsset).image,
+                                  swipeDismissible: false,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SafeArea(
+                          minimum: const EdgeInsets.all(12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.amber,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                              const FavouriteButton()
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 30,
+                          left: 20,
+                          child: Text(
+                            hotel.namaHotel,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 42,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Carousel(
+                            detailImagePath: hotel.detailImageHotelList,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              TabView(hotel: hotel),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MobileHotelDetails extends StatelessWidget {
+  const MobileHotelDetails({Key? key, required this.hotel}) : super(key: key);
 
   final HotelData hotel;
 
@@ -32,27 +164,9 @@ class HotelDetails extends StatelessWidget {
                 HotelInfo(
                   name: hotel.namaHotel,
                   rating: hotel.rating,
-                  location: hotel.lokasi,
+                  location: hotel.kota,
                 ),
-                const TabBar(
-                  tabs: [
-                    Tab(text: 'Deskripsi'),
-                    Tab(text: 'Benefit'),
-                    Tab(text: 'Alamat'),
-                    Tab(text: 'Ulasan'),
-                  ],
-                ),
-                SizedBox(
-                  height: 302,
-                  child: TabBarView(
-                    children: [
-                      Text(hotel.deskripsiTabHotel),
-                      Text(hotel.benefitTabHotel),
-                      Text(hotel.alamatTabHotel),
-                      Text(hotel.ulasanTabHotel),
-                    ],
-                  ),
-                ),
+                TabView(hotel: hotel),
               ],
             ),
           ),
@@ -62,7 +176,6 @@ class HotelDetails extends StatelessWidget {
   }
 }
 
-// class for hotel info
 class HotelInfo extends StatelessWidget {
   const HotelInfo({
     Key? key,
@@ -109,7 +222,6 @@ class HotelInfo extends StatelessWidget {
   }
 }
 
-// class for carousel(image slider with animation)
 class Carousel extends StatefulWidget {
   const Carousel({Key? key, required this.detailImagePath}) : super(key: key);
 
@@ -131,7 +243,7 @@ class _CarouselState extends State<Carousel> {
             height: 250.0,
             enlargeCenterPage: true,
             autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 10),
+            autoPlayInterval: const Duration(seconds: 5),
             autoPlayCurve: Curves.fastOutSlowIn,
             onPageChanged: (index, reason) {
               setState(() {
@@ -142,15 +254,24 @@ class _CarouselState extends State<Carousel> {
           items: List.generate(widget.detailImagePath.length, (index) {
             return Builder(
               builder: (BuildContext context) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: AssetImage(widget.detailImagePath[index]),
-                      fit: BoxFit.cover,
+                return GestureDetector(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: AssetImage(widget.detailImagePath[index]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
+                  onTap: () {
+                    showImageViewer(
+                      context,
+                      Image.asset(widget.detailImagePath[index]).image,
+                      swipeDismissible: false,
+                    );
+                  },
                 );
               },
             );
@@ -170,6 +291,42 @@ class _CarouselState extends State<Carousel> {
               ),
             );
           }),
+        ),
+      ],
+    );
+  }
+}
+
+class TabView extends StatelessWidget {
+  const TabView({Key? key, required this.hotel}) : super(key: key);
+
+  final HotelData hotel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const TabBar(
+          tabs: [
+            Tab(text: 'Deskripsi'),
+            Tab(text: 'Benefit'),
+            Tab(text: 'Alamat'),
+            Tab(text: 'Ulasan'),
+          ],
+        ),
+        SizedBox(
+          height: 302,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: TabBarView(
+              children: [
+                Text(hotel.deskripsiTabHotel),
+                Text(hotel.benefitTabHotel),
+                Text(hotel.alamatTabHotel),
+                Text(hotel.ulasanTabHotel),
+              ],
+            ),
+          ),
         ),
       ],
     );

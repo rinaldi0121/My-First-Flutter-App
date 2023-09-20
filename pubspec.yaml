@@ -31,6 +31,7 @@ dependencies:
   carousel_indicator: ^1.0.6
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
+  easy_image_viewer: ^1.2.1
   flutter:
     sdk: flutter
   update: ^0.3.1
